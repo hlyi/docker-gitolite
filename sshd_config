@@ -19,7 +19,7 @@ LogLevel                        VERBOSE
 LoginGraceTime                  30
 StrictModes                     no     # Required because of the mode of the volume
 PermitRootLogin                 no
-AllowUsers                      git
+AllowUsers                      gitolite
 
 # Disable things that don't make sense in this container
 PrintMotd                       no
