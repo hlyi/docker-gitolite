@@ -1,7 +1,7 @@
 ### gitolite on docker
 
-Runs a SSH server, serving gitolite as the `git` user. Non-root, that is, sshd
-itself runs as `git`.
+Runs a SSH server, serving gitolite as the `gitolite` user. Non-root, that is, sshd
+itself runs as `gitolite`.
 
 On the first start, it will run `gitolite setup` with a starting ssh key
 you provided, or you can bootstrap with an existing gitolite-admin repository.
@@ -12,7 +12,7 @@ outside changes.
 
 ### Changelog
 
-- 2020-09-30: `sshd` no longer runs as `root`, but now runs as the `git` user.
+- 2020-09-30: `sshd` no longer runs as `root`, but now runs as the `gitolite` user.
 
 
 ### Examples
@@ -23,7 +23,7 @@ New installation:
 
 Use an existing gitolite installation:
 
-    docker run -v /var/vcroot/git:/home/git/repositories elsdoerfer/gitolite
+    docker run -v /var/vcroot/git:/home/gitolite/repositories elsdoerfer/gitolite
 
 
 ### Environment variables:
@@ -45,7 +45,7 @@ Hostnames (only a single one is supported currently) to add to known_hosts, i.e.
 
 ### Directories you could bind mount (or use --volumes-from)
 
-`/home/git/repositories` - The actual git repositories will be stored here.
+`/home/gitolite/repositories` - The actual git repositories will be stored here.
 
 `/etc/ssh` - The SSH host keys are stored here; they are generated when the container starts,
   and if you don't maintain them across containers, your clients will see warnings
@@ -65,7 +65,7 @@ To fix this, you have a couple of options:
 
 1) You can make `/etc/ssh` a volume; the host key is stored there.
 
-2) You can make sure a directory `/home/git/repositories/.ssh/host-keys`
+2) You can make sure a directory `/home/gitolite/repositories/.ssh/host-keys`
    exists and contains the host keys. If that is the case, they will be used.
    You may want to prefer this over (1) because you only need a single volume.
 
@@ -78,12 +78,12 @@ If your gitolite install needs to mirror (that is, execute git push itself), the
 image can help you:
 
 * The git user will have a ssh key generated for itself. Access the public key
-  using `docker cp CID:/home/git/.ssh/id_rsa.pub .`.
+  using `docker cp CID:/home/gitolite/.ssh/id_rsa.pub .`.
 
   Note that if you keep recreating the container, rather than restarting, a new
-  key will be generated. To prevent this, you can mount the  `/home/git/.ssh`
-  directory. Alternatively, if the folder `/home/git/repositories/.ssh/client`
-  exists, the files in that folder will be used (copied to `/home/git/.ssh`).
+  key will be generated. To prevent this, you can mount the  `/home/gitolite/.ssh`
+  directory. Alternatively, if the folder `/home/gitolite/repositories/.ssh/client`
+  exists, the files in that folder will be used (copied to `/home/gitolite/.ssh`).
   You may want to prefer this over a separate volume for the ssh files.
 
 * Use the `TRUST_HOSTS` environment variable to prepare the
